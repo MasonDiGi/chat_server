@@ -1,6 +1,7 @@
 import socket
 from vars import FORMAT, HEADER, DC_MSG
 
+
 class Client:
 	def __init__(self, conn, addr):
 		self.conn = conn
