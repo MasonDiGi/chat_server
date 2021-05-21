@@ -6,7 +6,7 @@ HEADER = 64
 PORT = 5050
 FORMAT = 'utf-8'
 DC_MSG = "!DISCONNECT"
-SERVER = "192.168.1.65"
+SERVER = "localhost"
 ADDR = (SERVER, PORT)
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

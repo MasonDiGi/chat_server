@@ -54,6 +54,7 @@ def start():
 	finally:
 		global stop_thread
 		stop_thread = True
+		server.detach()
 		server.shutdown(socket.SHUT_RDWR)
 		server.close()
 		print("[SERVER] Good Night")
