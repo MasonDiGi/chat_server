@@ -1,10 +1,15 @@
 from flask import Flask, request, jsonify
 from client import Client
 import serverConn as sc
+import atexit
 
 app = Flask(__name__)
-clients = []
-serverConn = sc.ServerConn()
+
+
+def onExit(serverC):
+	serverC.dc()
+	for client in clients:
+		client.close()
 
 
 @app.route("/")
@@ -50,19 +55,15 @@ def login():
 
 @app.route("/logout", methods=["POST"])
 def logout():
-	req = request.json
-	index = req['index']
+	req = request.form
+	index = int(req['id'])
+	if index >= len(clients) or index < 0:
+		return "Not a valid ID"
 	clients[index].close()
 	clients.pop(index)
-	print(clients)
 	return "Done!"
 
 
-try:
-	app.run(host="localhost", port=5000, debug=True)
-finally:
-	serverConn = sc.ServerConn()
-	serverConn.dc()
-	for client in clients:
-		client.close()
-		exit()
+clients = []
+serverConn = sc.ServerConn()
+atexit.register(onExit, serverConn)
