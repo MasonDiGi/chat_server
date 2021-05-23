@@ -29,4 +29,3 @@ class Client:
 		self.send(DC_MSG)
 		time.sleep(0.5)
 		self.conn.close()
-		exit()

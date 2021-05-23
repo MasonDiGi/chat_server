@@ -2,8 +2,10 @@ from flask import Flask, request, jsonify
 from client import Client
 import serverConn as sc
 import atexit
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 def onExit(serverC):
