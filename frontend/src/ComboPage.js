@@ -10,6 +10,7 @@ class ComboPage extends React.Component {
             loggedIn: false,
             name: "",
             index: null,
+            messages: {},
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -21,7 +22,7 @@ class ComboPage extends React.Component {
         formData.append("name", this.state.name);
         axios.post(`http://${API_URL}/login`, formData).then(r => {
             this.setState({index: r.data});
-            console.log(this.state);
+            this.setState({loggedIn: true});
         })
     }
 
@@ -31,7 +32,15 @@ class ComboPage extends React.Component {
     }
 
     componentDidMount() {
+        this.interval = setInterval(() => {
+            axios.get(`http://${API_URL}/getmessages`).then(r => {
+                this.setState({messages: r.data});
+            });
+        }, 1000);
         window.addEventListener("beforeunload", (e) => {
+            if (this.state.index == null) {
+                window.close();
+            }
             let formData = new FormData();
             formData.append("id", this.state.index);
             axios.post(`http://${API_URL}/logout`, formData).then(r => {
@@ -44,22 +53,36 @@ class ComboPage extends React.Component {
     }
 
     render() {
-        return (
-            <Jumbotron className={"m-5"}>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Group controlId="username">
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control type="text" placeholder="Enter username" onChange={this.handleChange} />
-                        <Form.Text className="text-muted">
-                            This will be temporary and nothing will be saved.
-                        </Form.Text>
-                  </Form.Group>
-                  <Button variant="primary" type="submit">
-                    Submit
-                  </Button>
-                </Form>
-            </Jumbotron>
-        );
+        if (!this.state.loggedIn) {
+            return (
+                <Jumbotron className={"m-5"}>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Group controlId="username">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control type="text" placeholder="Enter username" onChange={this.handleChange}/>
+                            <Form.Text className="text-muted">
+                                This will be temporary and nothing will be saved.
+                            </Form.Text>
+                        </Form.Group>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </Form>
+                </Jumbotron>
+            );
+        } else {
+            return (
+                <Jumbotron className="m-5">
+                    {this.state.messages.map((val, id) => {
+                        return (
+                            <div key={id}>
+                                {val} <br/>
+                            </div>
+                        );
+                    })}
+                </Jumbotron>
+            );
+        }
     }
 }
 
