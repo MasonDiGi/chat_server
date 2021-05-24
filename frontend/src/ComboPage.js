@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from "axios";
-import {Button, Form, Jumbotron} from "react-bootstrap";
+import {Button, Form, Jumbotron, InputGroup, FormControl} from "react-bootstrap";
 import {API_URL} from "./urls";
 
 class ComboPage extends React.Component {
@@ -11,6 +11,7 @@ class ComboPage extends React.Component {
             name: "",
             index: null,
             messages: {},
+            messageToSend: "",
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -28,7 +29,7 @@ class ComboPage extends React.Component {
 
     handleChange(e) {
         e.preventDefault();
-        this.setState({name: e.target.value});
+        this.setState({[e.target.id]: e.target.value});
     }
 
     componentDidMount() {
@@ -57,7 +58,7 @@ class ComboPage extends React.Component {
             return (
                 <Jumbotron className={"m-5"}>
                     <Form onSubmit={this.handleSubmit}>
-                        <Form.Group controlId="username">
+                        <Form.Group controlId="name">
                             <Form.Label>Username</Form.Label>
                             <Form.Control type="text" placeholder="Enter username" onChange={this.handleChange}/>
                             <Form.Text className="text-muted">
@@ -72,7 +73,7 @@ class ComboPage extends React.Component {
             );
         } else {
             return (
-                <Jumbotron className="m-5">
+                <Jumbotron id="messageDisplay" className="m-5">
                     {this.state.messages.map((val, id) => {
                         return (
                             <div key={id}>
@@ -80,6 +81,17 @@ class ComboPage extends React.Component {
                             </div>
                         );
                     })}
+                    <InputGroup className="mb-3">
+                        <InputGroup.Prepend>
+                            <InputGroup.Text id="messageInput">
+                                [{this.state.name}]:
+                            </InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl onChange={this.handleChange} id="messageToSend" aria-describedby="messageInput" />
+                        <InputGroup.Append>
+                            <Button variant="outline-dark">Send</Button>
+                        </InputGroup.Append>
+                    </InputGroup>
                 </Jumbotron>
             );
         }
