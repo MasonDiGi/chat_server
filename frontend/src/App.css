@@ -39,4 +39,11 @@
 
 #messageDisplay {
   text-align: left;
+  height: 90vh;
+}
+
+#messages {
+  height: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
 }

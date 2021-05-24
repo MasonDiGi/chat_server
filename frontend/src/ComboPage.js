@@ -15,6 +15,10 @@ class ComboPage extends React.Component {
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.scrollToBottom = this.scrollToBottom.bind(this);
+        this.messageSent = this.messageSent.bind(this);
+        this.el = React.createRef();
+        this.cont = React.createRef();
     }
 
     handleSubmit(e) {
@@ -24,7 +28,8 @@ class ComboPage extends React.Component {
         axios.post(`http://${API_URL}/login`, formData).then(r => {
             this.setState({index: r.data});
             this.setState({loggedIn: true});
-        })
+            this.scrollToBottom();
+        });
     }
 
     handleChange(e) {
@@ -35,7 +40,16 @@ class ComboPage extends React.Component {
     componentDidMount() {
         this.interval = setInterval(() => {
             axios.get(`http://${API_URL}/getmessages`).then(r => {
-                this.setState({messages: r.data});
+                if (this.state.messages && this.el.current) {
+                    if (Math.round(this.el.current.getBoundingClientRect().bottom) === Math.round(this.cont.current.getBoundingClientRect().bottom)) {
+                        this.setState({messages: r.data});
+                        this.scrollToBottom();
+                    } else {
+                        this.setState({messages: r.data});
+                    }
+                } else {
+                    this.setState({messages: r.data});
+                }
             });
         }, 1000);
         window.addEventListener("beforeunload", (e) => {
@@ -51,6 +65,22 @@ class ComboPage extends React.Component {
     }
 
     componentWillUnmount() {
+    }
+
+    scrollToBottom() {
+        if (this.el) {
+            this.el.current.scrollIntoView({behavior: "smooth"});
+        }
+    }
+
+    messageSent(e) {
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append("id", this.state.index);
+        formData.append("msg", this.state.messageToSend);
+        axios.post(`http://${API_URL}/sendmessage`, formData).then(r => {
+            this.scrollToBottom();
+        });
     }
 
     render() {
@@ -74,13 +104,16 @@ class ComboPage extends React.Component {
         } else {
             return (
                 <Jumbotron id="messageDisplay" className="m-5">
-                    {this.state.messages.map((val, id) => {
-                        return (
-                            <div key={id}>
-                                {val} <br/>
-                            </div>
-                        );
-                    })}
+                    <div id="messages" ref={this.cont}>
+                        {this.state.messages.map((val, id) => {
+                            return (
+                                <div key={id}>
+                                    {val} <br/>
+                                </div>
+                            );
+                        })}
+                        <div ref={this.el} />
+                    </div>
                     <InputGroup className="mb-3">
                         <InputGroup.Prepend>
                             <InputGroup.Text id="messageInput">
@@ -89,7 +122,7 @@ class ComboPage extends React.Component {
                         </InputGroup.Prepend>
                         <FormControl onChange={this.handleChange} id="messageToSend" aria-describedby="messageInput" />
                         <InputGroup.Append>
-                            <Button variant="outline-dark">Send</Button>
+                            <Button variant="outline-dark" onClick={this.messageSent}>Send</Button>
                         </InputGroup.Append>
                     </InputGroup>
                 </Jumbotron>
