@@ -1,1 +1,0 @@
-export let API_URL = "localhost:5000"
