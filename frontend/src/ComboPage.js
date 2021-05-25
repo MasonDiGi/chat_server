@@ -17,8 +17,10 @@ class ComboPage extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.scrollToBottom = this.scrollToBottom.bind(this);
         this.messageSent = this.messageSent.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.el = React.createRef();
         this.cont = React.createRef();
+        this.msgInput = React.createRef();
     }
 
     handleSubmit(e) {
@@ -68,19 +70,25 @@ class ComboPage extends React.Component {
     }
 
     scrollToBottom() {
-        if (this.el) {
+        if (this.el.current) {
             this.el.current.scrollIntoView({behavior: "smooth"});
         }
     }
 
-    messageSent(e) {
-        e.preventDefault();
+    messageSent() {
         let formData = new FormData();
         formData.append("id", this.state.index);
         formData.append("msg", this.state.messageToSend);
         axios.post(`http://${API_URL}/sendmessage`, formData).then(r => {
             this.scrollToBottom();
+            this.msgInput.current.value = "";
         });
+    }
+
+    handleKeyPress(e) {
+        if (e.key === "Enter") {
+            this.messageSent();
+        }
     }
 
     render() {
@@ -120,7 +128,7 @@ class ComboPage extends React.Component {
                                 [{this.state.name}]:
                             </InputGroup.Text>
                         </InputGroup.Prepend>
-                        <FormControl onChange={this.handleChange} id="messageToSend" aria-describedby="messageInput" />
+                        <FormControl onKeyPress={this.handleKeyPress} onChange={this.handleChange} id="messageToSend" ref={this.msgInput} aria-describedby="messageInput" />
                         <InputGroup.Append>
                             <Button variant="outline-dark" onClick={this.messageSent}>Send</Button>
                         </InputGroup.Append>
