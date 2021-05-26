@@ -1,3 +1,5 @@
+# Files that I do not want saved in git
+
 .idea/
 
 **/__pycache__/
