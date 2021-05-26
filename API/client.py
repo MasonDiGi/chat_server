@@ -1,12 +1,6 @@
 import socket
 import time
-
-HEADER = 64
-PORT = 5050
-FORMAT = 'utf-8'
-DC_MSG = "!DISCONNECT"
-SERVER = "localhost"
-ADDR = (SERVER, PORT)
+from vars import ADDR, FORMAT, HEADER, DC_MSG
 
 
 class Client:
