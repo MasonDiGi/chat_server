@@ -4,6 +4,9 @@ import serverConn as sc
 import atexit
 from flask_cors import CORS
 
+# TODO: make it so that the indexes aren't the actual index and stay the same when a client is removed (thats a big
+#  problem lol)
+
 # Create a flask app for serving API routes
 # Add CORS bc web development sucks
 app = Flask(__name__)

@@ -1,3 +1,5 @@
+// Wrapper for the app created by create-react-app (not me)
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';

@@ -1,3 +1,5 @@
+/* Most of this is from the create-react-app script */
+
 .App {
   text-align: center;
 }
@@ -37,12 +39,16 @@
   }
 }
 
+
+/* I added these two sections */
 #messageDisplay {
+  /* Aligns messsages to the left and sets the height to 90% (bc of the margin) */
   text-align: left;
   height: 90vh;
 }
 
 #messages {
+  /* Allows the actual messages to be scrolled through */
   height: 100%;
   overflow: hidden;
   overflow-y: scroll;
