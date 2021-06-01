@@ -111,6 +111,7 @@ class ComboPage extends React.Component {
         let formData = new FormData();
         formData.append("id", this.state.index);
         axios.post(`http://${API_URL}/logout`, formData).then(r => {
+            // Reset most of the state of the page
             this.setState({
                 loggedIn: false,
                 index: null,
