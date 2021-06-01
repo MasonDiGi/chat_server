@@ -65,7 +65,7 @@ class ComboPage extends React.Component {
                     this.setState({messages: r.data});
                 }
             });
-        }, 1000);
+        }, 500);
         // Call this if the tab is closed so the user can log out
         window.addEventListener("beforeunload", (e) => {
             if (this.state.index == null) {
@@ -125,37 +125,41 @@ class ComboPage extends React.Component {
                     </Form>
                 </Jumbotron>
             );
-        // The message page
+            // The message page
         } else {
             return (
-                <Jumbotron id="messageDisplay" className="m-5">
-                    {/* Basically a for loop to show all the messages */}
-                    <div id="messages" ref={this.cont}>
-                        {this.state.messages.map((val, id) => {
-                            return (
-                                <div key={id}>
-                                    {val} <br/>
-                                </div>
-                            );
-                        })}
-                        <div ref={this.el} />
-                    </div>
-                    {/* The form for sending new messages */}
-                    <InputGroup className="mb-3">
-                        {/* Prepends the name before the prompt */}
-                        <InputGroup.Prepend>
-                            <InputGroup.Text id="messageInput">
-                                [{this.state.name}]:
-                            </InputGroup.Text>
-                        </InputGroup.Prepend>
-                        {/* The actual prompt, set to update the state, send message when needed, and handle enter being pressed */}
-                        <FormControl onKeyPress={this.handleKeyPress} onChange={this.handleChange} id="messageToSend" ref={this.msgInput} aria-describedby="messageInput" />
-                        <InputGroup.Append>
-                            {/* Submit button to call the send function */}
-                            <Button variant="outline-dark" onClick={this.messageSent}>Send</Button>
-                        </InputGroup.Append>
-                    </InputGroup>
-                </Jumbotron>
+                <div>
+                    <Jumbotron id="messageDisplay" className="m-5">
+                        {/* Basically a for loop to show all the messages */}
+                        <div id="messages" ref={this.cont}>
+                            {this.state.messages.map((val, id) => {
+                                return (
+                                    <div key={id}>
+                                        {val} <br/>
+                                    </div>
+                                );
+                            })}
+                            <div ref={this.el}/>
+                        </div>
+                        {/* The form for sending new messages */}
+                        <InputGroup className="mb-3">
+                            {/* Prepends the name before the prompt */}
+                            <InputGroup.Prepend>
+                                <InputGroup.Text id="messageInput">
+                                    [{this.state.name}]:
+                                </InputGroup.Text>
+                            </InputGroup.Prepend>
+                            {/* The actual prompt, set to update the state, send message when needed, and handle enter being pressed */}
+                            <FormControl onKeyPress={this.handleKeyPress} onChange={this.handleChange}
+                                         id="messageToSend" ref={this.msgInput} aria-describedby="messageInput"/>
+                            <InputGroup.Append>
+                                {/* Submit button to call the send function */}
+                                <Button variant="outline-dark" onClick={this.messageSent}>Send</Button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                    </Jumbotron>
+                    <Button id="logout" className={"mr-5"}>Logout</Button>
+                </div>
             );
         }
     }
