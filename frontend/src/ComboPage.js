@@ -18,6 +18,7 @@ class ComboPage extends React.Component {
         }
         // Methods that I created
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.scrollToBottom = this.scrollToBottom.bind(this);
         this.messageSent = this.messageSent.bind(this);
@@ -105,6 +106,20 @@ class ComboPage extends React.Component {
         }
     }
 
+    // Log the user out when they choose
+    handleLogout() {
+        let formData = new FormData();
+        formData.append("id", this.state.index);
+        axios.post(`http://${API_URL}/logout`, formData).then(r => {
+            this.setState({
+                loggedIn: false,
+                index: null,
+                messages: {},
+                messageToSend: "",
+            });
+        });
+    }
+
     // The HTML of the acutal component
     render() {
         // The login form
@@ -114,7 +129,7 @@ class ComboPage extends React.Component {
                     <Form onSubmit={this.handleSubmit}>
                         <Form.Group controlId="name">
                             <Form.Label>Username</Form.Label>
-                            <Form.Control type="text" placeholder="Enter username" onChange={this.handleChange}/>
+                            <Form.Control type="text" placeholder="Enter username" value={!!this.state.name ? this.state.name : null} onChange={this.handleChange}/>
                             <Form.Text className="text-muted">
                                 This will be temporary and nothing will be saved.
                             </Form.Text>
@@ -125,7 +140,7 @@ class ComboPage extends React.Component {
                     </Form>
                 </Jumbotron>
             );
-            // The message page
+        // The message page
         } else {
             return (
                 <div>
@@ -158,7 +173,7 @@ class ComboPage extends React.Component {
                             </InputGroup.Append>
                         </InputGroup>
                     </Jumbotron>
-                    <Button id="logout" className={"mr-5"}>Logout</Button>
+                    <Button id="logout" className={"mr-5"} onClick={this.handleLogout}>Logout</Button>
                 </div>
             );
         }
