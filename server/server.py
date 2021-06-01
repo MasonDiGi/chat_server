@@ -45,7 +45,7 @@ def handleRecv(client):
 	# Once the client disconnects, gracefully remove any trace of their existence
 	client.conn.close()
 	clients.remove(client)
-	print(f"[CLIENTS] {client.addr[0]} had disconnected")
+	print(f"[CLIENTS] {client.name} has disconnected")
 
 
 # Start running the server
