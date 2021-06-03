@@ -37,16 +37,18 @@
 
 #logout {
   position: absolute;
-  /*right: 2%;*/
   top: 0.5%;
-  right: 0;
+  right: 0.5%;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (orientation: portrait) {
   #messageDisplay {
       /* Set width to 100% and get rid of margin on mobile */
-      margin: 5vh 0 0 0 !important;
-      height: 95vh;
+      margin: 0 0 0 0 !important;
+      height: 100vh;
       width: 100vw;
+  }
+  #messages {
+    height: 95%;
   }
 }

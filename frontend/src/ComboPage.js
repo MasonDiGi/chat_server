@@ -96,6 +96,7 @@ class ComboPage extends React.Component {
         axios.post(`http://${API_URL}/sendmessage`, formData).then(r => {
             this.scrollToBottom();
             this.msgInput.current.value = "";
+            this.msgInput.current.focus();
         });
     }
 
@@ -143,11 +144,12 @@ class ComboPage extends React.Component {
             );
         // The message page
         } else {
+            this.scrollToBottom();
             return (
                 <div>
                     <Jumbotron id="messageDisplay" className="m-5">
                         {/* Basically a for loop to show all the messages */}
-                        <div id="messages" ref={this.cont}>
+                        <div id="messages" className={"mb-1"} ref={this.cont}>
                             {this.state.messages.map((val, id) => {
                                 return (
                                     <div key={id}>
@@ -158,7 +160,7 @@ class ComboPage extends React.Component {
                             <div ref={this.el}/>
                         </div>
                         {/* The form for sending new messages */}
-                        <InputGroup className="mb-3">
+                        <InputGroup id={"messageInput"} className="mb-3">
                             {/* Prepends the name before the prompt */}
                             <InputGroup.Prepend>
                                 <InputGroup.Text id="messageInput">
@@ -174,7 +176,7 @@ class ComboPage extends React.Component {
                             </InputGroup.Append>
                         </InputGroup>
                     </Jumbotron>
-                    <Button id="logout" className={"mr-5"} onClick={this.handleLogout}>Logout</Button>
+                    <Button id="logout" onClick={this.handleLogout}>Logout</Button>
                 </div>
             );
         }
