@@ -21,7 +21,6 @@ def broadcast(msg):
 # A separate thread to receive and handle messages for a specific client
 def handleRecv(client):
 	global stop_thread
-	print(f"[CLIENTS] {client.addr[0]} has connected")
 
 	connected = True
 	# Handle the intial message (defines client's name)
@@ -31,6 +30,7 @@ def handleRecv(client):
 		msg_len = int(msg_len)
 		msg = client.conn.recv(msg_len).decode(FORMAT)
 		client.name = msg
+	print(f"[CLIENTS] {client.name} has connected")
 	# Keep receiving messages and broadcasting them until the client disconnects
 	while connected and not stop_thread:
 		msg_len = client.conn.recv(HEADER).decode(FORMAT)
