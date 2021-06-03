@@ -3,6 +3,7 @@ from client import Client
 import serverConn as sc
 import atexit
 from flask_cors import CORS
+import random
 
 # TODO: make it so that the indexes aren't the actual index and stay the same when a client is removed (thats a big
 #  problem lol)
@@ -47,7 +48,7 @@ def sendMessage():
 		return "Not a valid ID"
 	except KeyError:
 		return "No ID specified"
-	if clientId >= len(clients):
+	if clientId not in clients:
 		return "That ID does not exist"
 	if req["msg"] is None:
 		return "no message provided"
@@ -62,9 +63,11 @@ def sendMessage():
 @app.route("/login", methods=["POST"])
 def login():
 	req = request.form
-	index = len(clients)
+	index = random.randint(1000, 9999)
+	while index in clients:
+		index = random.randint(1000, 9999)
 	client = Client(req["name"], index)
-	clients.append(client)
+	clients[index] = client
 	return str(index)
 
 
@@ -81,6 +84,6 @@ def logout():
 
 
 # Set up vars and connection to server
-clients = []
+clients = {}
 serverConn = sc.ServerConn()
 atexit.register(onExit, serverConn)
