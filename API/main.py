@@ -76,7 +76,7 @@ def login():
 def logout():
 	req = request.form
 	index = int(req['id'])
-	if index >= len(clients) or index < 0:
+	if index not in clients:
 		return "Not a valid ID"
 	clients[index].close()
 	clients.pop(index)
