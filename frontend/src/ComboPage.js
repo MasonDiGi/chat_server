@@ -69,14 +69,26 @@ class ComboPage extends React.Component {
         }, 500);
         // Call this if the tab is closed so the user can log out
         window.addEventListener("beforeunload", (e) => {
+            e.preventDefault();
             if (this.state.index == null) {
                 window.close();
+            } else {
+                this.handleLogout(false, true);
+                return '';
             }
-            let formData = new FormData();
-            formData.append("id", this.state.index);
-            axios.post(`http://${API_URL}/logout`, formData).then(r => {
+        });
+    }
+
+    // When the page is being closed, remove the event listeners
+    componentWillUnmount() {
+        window.removeEventListener("beforeunload", (e) => {
+            e.preventDefault();
+            if (this.state.index == null) {
                 window.close();
-            });
+            } else {
+                this.handleLogout(false, true);
+                return '';
+            }
         });
     }
 
@@ -108,7 +120,7 @@ class ComboPage extends React.Component {
     }
 
     // Log the user out when they choose
-    handleLogout() {
+    handleLogout(reload=false, close=false) {
         let formData = new FormData();
         formData.append("id", this.state.index);
         axios.post(`http://${API_URL}/logout`, formData).then(r => {
@@ -119,6 +131,11 @@ class ComboPage extends React.Component {
                 messages: {},
                 messageToSend: "",
             });
+            if (reload) {
+                window.location.reload();
+            } else if (close) {
+                window.close();
+            }
         });
     }
 
@@ -131,7 +148,7 @@ class ComboPage extends React.Component {
                     <Form onSubmit={this.handleSubmit}>
                         <Form.Group controlId="name">
                             <Form.Label>Username</Form.Label>
-                            <Form.Control type="text" placeholder="Enter username" value={!!this.state.name ? this.state.name : null} onChange={this.handleChange}/>
+                            <Form.Control type="text" placeholder="Enter username" value={!!this.state.name ? this.state.name : ""} onChange={this.handleChange}/>
                             <Form.Text className="text-muted">
                                 This will be temporary and nothing will be saved.
                             </Form.Text>
