@@ -185,7 +185,7 @@ class ComboPage extends React.Component {
                                 </InputGroup.Text>
                             </InputGroup.Prepend>
                             {/* The actual prompt, set to update the state, send message when needed, and handle enter being pressed */}
-                            <FormControl onKeyPress={this.handleKeyPress} onChange={() => this.handleChange(false, false)}
+                            <FormControl onKeyPress={this.handleKeyPress} onChange={this.handleChange}
                                          id="messageToSend" ref={this.msgInput} aria-describedby="messageInput"/>
                             <InputGroup.Append>
                                 {/* Submit button to call the send function */}
@@ -193,7 +193,7 @@ class ComboPage extends React.Component {
                             </InputGroup.Append>
                         </InputGroup>
                     </Jumbotron>
-                    <Button id="logout" onClick={this.handleLogout}>Logout</Button>
+                    <Button id="logout" onClick={() => this.handleLogout(false, false)}>Logout</Button>
                 </div>
             );
         }
