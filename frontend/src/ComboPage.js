@@ -185,7 +185,7 @@ class ComboPage extends React.Component {
                                 </InputGroup.Text>
                             </InputGroup.Prepend>
                             {/* The actual prompt, set to update the state, send message when needed, and handle enter being pressed */}
-                            <FormControl onKeyPress={this.handleKeyPress} onChange={this.handleChange}
+                            <FormControl onKeyPress={this.handleKeyPress} onChange={() => this.handleChange(false, false)}
                                          id="messageToSend" ref={this.msgInput} aria-describedby="messageInput"/>
                             <InputGroup.Append>
                                 {/* Submit button to call the send function */}
