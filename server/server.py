@@ -5,10 +5,7 @@ from client import Client
 from vars import *
 
 # Intialize all variables needed for the server
-# TODO: make these not global and as parameters
 clients = []
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(ADDR)
 stop_thread = False
 
 
@@ -49,7 +46,7 @@ def handleRecv(client):
 
 
 # Start running the server
-def start():
+def start(server):
 	# Open up the port
 	server.listen()
 	print(f"[SERVER] Server is listening on {SERVER}")
@@ -77,4 +74,6 @@ def start():
 # If this file is being run
 if __name__ == "__main__":
 	print("[SERVER] Server starting up")
-	start()
+	srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	srv.bind(ADDR)
+	start(srv)
