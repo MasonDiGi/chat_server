@@ -4,8 +4,8 @@ A chat server made with python and socket
 ## Setup
 - Install [python](https://www.python.org/downloads/)
 - Install [node.js](https://nodejs.org/en/)
-- Install all required python packages with `python -m pip install -r requirements.txt` while in the main directory
-- Install all required node.js pacakges with `npm i` while in the `frontend` directory
+- Install all required python packages by running `python -m pip install -r requirements.txt` while in the main directory
+- Install all required node.js pacakges by running `npm i` while in the `frontend` directory
 
 ## Run the software
 ### Server
